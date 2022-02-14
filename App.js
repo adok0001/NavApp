@@ -1,15 +1,21 @@
-import 'react-native-gesture-handler';
 import React from 'react';
-import { Button, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Button, Image, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import * as Sharing from 'expo-sharing';
-import { NavigationContainer, TabActions } from '@react-navigation/native';
+import { NavigationContainer, TabActions, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 //import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {BlurView} from 'expo-blur';
+import { getHeaderTitle } from '@react-navigation/elements';
+import { backgroundColor, textDecorationColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import { TouchableWithoutFeedback } from 'react-native-web';
+
 
 const Tab = createBottomTabNavigator();
+Keyboard.dismiss();
 
 function HomeScreen({ navigation, route }) {
   React.useEffect(() => {
@@ -19,14 +25,12 @@ function HomeScreen({ navigation, route }) {
   }, [route.params?.post]);
 
   return (
-    <SafeAreaView style={styles.homeContainer}>
-    <ScrollView style={{marginHorizontal:5}}
+    <SafeAreaView
+     style={styles.homeContainer}
+     >
+    <ScrollView style={{ paddingTop:50 }}
     // style={styles.homeContainer}>
     >
-      <Text 
-      style={styles.instructions}
-      >
-        Home Screen</Text>
       <Image source={require('./assets/joppe-spaa-TsYzva0e2pQ-unsplash.jpg')}
       style={styles.image}
       />
@@ -47,21 +51,35 @@ function HomeScreen({ navigation, route }) {
 }
 
 function CreatePostScreen({ navigation, route }) {
-  const [postText, setPostText] = React.useState("");
+  const [postText, setPostText] = React.useState('');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (<Button onPress={() => navigation.navigate("Upload")} title="Upload" color='white' />)
     })
-  })
+  });
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return ()=> {
+        setPostText('');
+      }
+    }, [])
+  );
+
   
   return (
-    <View style={styles.container}>
-      <TextInput placeholder="What's on your mind?" style={styles.post} value={postText} onChangeText={setPostText} />
-      <Button title="Post Text" onPress={() => navigation.navigate({ name: "Home", params: { post: postText }, merge: true, })} />
+    <SafeAreaView style={styles.container} >
+    <TextInput placeholder="What's on your mind?" style={styles.post} value={postText} onChangeText={setPostText} 
+      keyboardAppearance='dark' placeholderTextColor="white" returnKeyType='go' 
+      />
+            <Button title="Post Text" onPress={() => navigation.navigate({ name: "Home", params: { post: postText }, merge: true, })} />
       <Button title="Post with Video" onPress={() => navigation.navigate({ name: "Upload", params: { post: postText }, merge: true, })} />
       <Button title='Titular update' onPress={() => navigation.setOptions({ headerTitle: "New Post" })} />
-    </View>
+
+      </SafeAreaView>
+
+      
   );
 
 }
@@ -129,7 +147,7 @@ function GreenScreen({ route, navigation }) {
     <View style={styles.container} >
       <Text style={styles.instructions}>The Green Screen</Text>
       <Text style={styles.instructions}>Username: {JSON.stringify(username)} Player Number: {JSON.stringify(playerNo)}</Text>
-      <Button title="Re-Green" onPress={() => navigation.push("GreenScreen", { username: "godtamara", playerNo: Math.floor(Math.random() * 100), })} style={styles.button} />
+      <Button title="Re-Green" onPress={() => navigation.jumpTo("GreenScreen", { username: "godtamara", playerNo: Math.floor(Math.random() * 100), })} style={styles.button} />
       <Button title='Going back' onPress={() => navigation.goBack()} />
       <Button title="Go back to first screen in Tab" onPress={() => navigation.popToTop()} />
     </View>
@@ -147,17 +165,32 @@ function LogoTitle() {
 const BroadcastStack = createNativeStackNavigator();
 
 function UploadStackScreen(){
+
   return(
     <BroadcastStack.Navigator>
-      <BroadcastStack.Screen name="Create Post" component={CreatePostScreen} />
-      <BroadcastStack.Screen name="Upload" component={BroadcastScreen} />
+      <BroadcastStack.Screen name="Create Post" component={CreatePostScreen} options={{headerShown:false}} />
+      <BroadcastStack.Screen name="Upload" component={BroadcastScreen} 
+      options={{
+        headerTitle:(props) => <LogoTitle {...props} />,
+        marginTop:100,}} 
+        
+      />
     </BroadcastStack.Navigator>
   )
 }
 
+header: ({ navigation, route, options }) => {
+  const title = getHeaderTitle(options, route.name);
+  if (title==='Home'){
+
+  }
+  return <MyHeader title={title} style={options.headerStyle} />;
+};
+
 export default function App(props) {
 
   return (
+    <SafeAreaProvider>
     <NavigationContainer>
       <Tab.Navigator 
       screenOptions={({ route }) => ({
@@ -177,18 +210,32 @@ export default function App(props) {
           return <Ionicons name={iconName} size={size} color={color}/>;
         },
         //tabBarActiveTintColor: 'tomato',
+        tabBarStyle: {position: 'absolute'},
+        tabBarBackground: () => (<BlurView tint="dark" intensity={45} style={StyleSheet.absoluteFill}/>),
+        tabBarBadgeStyle:{backgroundColor:'blue'},
       })}
       //mode="modal" initialRouteName='Home' screenOptions={{ headerStyle: { backgroundColor: 'black' }, headerTintColor: 'white', headerTitleStyle: { fontWeight: 'bold' }, }} >
         >
-        <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false}} />
+        <Tab.Screen name="Home" component={HomeScreen} 
+        options={{ 
+          headerTitle: "Match Day", headerStyle:{},
+          headerTintColor:"white", headerTransparent:true, headerTitleStyle:{fontWeight: 'bold', fontSize:25,},
+          headerBackground: ()=>
+          <Image style={{width: 500, height: 100,}} 
+          source={require('./assets/thomas-serer-r-xKieMqL34-unsplash.jpg')} />,
+          
+          
+         }} />
         {/* <Tab.Screen name="Upload" component={BroadcastScreen} options={{ headerTitle: (props) => <LogoTitle {...props} /> }} /> */}
         <Tab.Screen name="GreenScreen" component={GreenScreen} initialParams={{ username: "tammyado" }} options={({ route }) => ({ title: route.params.name, tabBarBadge: 3 }) } />
         <Tab.Screen name="CreatePost" component={UploadStackScreen} options={{
           headerShown: false,
+          tabBarLabel: 'Create Post',
           //headerRight: () => (<Button onPress={() => alert("Upload")} title="Upload" color='white'/>), 
         }} />
       </Tab.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   );
 
 }
@@ -203,7 +250,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#111',
     alignItems: 'center',
     justifyContent: 'center',
-    
+    paddingBottom: 10,
   },
   logo: {
     width: 305,
@@ -213,13 +260,13 @@ const styles = StyleSheet.create({
   instructions: {
     color: '#888',
     fontSize: 18,
-    marginHorizontal: 15,
+    //marginHorizontal: 15,
     
     },
   button: {
-    backgroundColor: 'blue',
     padding: 20,
     borderRadius: 5,
+    color: 'blue'
   },
   buttonText: {
     fontSize: 20,
@@ -234,13 +281,16 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: 'black',
+    color:'white',
+    padding: 20,
+    borderBottomColor:"blue"
   },
   image:{
     width: 400,
     height: 250,
-    marginTop: 5,
-    marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
     padding: 20,
     //flexShrink: 1,
     //flex: 0.5
