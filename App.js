@@ -1,11 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-<<<<<<< Updated upstream
-import { Button, Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-=======
 import { Button, Dimensions, Image, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
->>>>>>> Stashed changes
 import * as ImagePicker from 'expo-image-picker';
 import * as Sharing from 'expo-sharing';
 import { NavigationContainer, TabActions } from '@react-navigation/native';
@@ -13,10 +9,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabBar, createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 //import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from '@expo/vector-icons/Ionicons';
-<<<<<<< Updated upstream
-
-const Tab = createBottomTabNavigator();
-=======
 import { BlurView } from 'expo-blur';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { backgroundColor, textDecorationColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
@@ -26,7 +18,6 @@ import { data } from './Data';
 
 const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get('screen');
->>>>>>> Stashed changes
 
 const ITEM_WIDTH = width * 0.9;
 const ITEM_HEIGHT = ITEM_WIDTH * 0.9;
@@ -36,30 +27,6 @@ function HomeScreen({ navigation, route }) {
 
   return (
     <SafeAreaView style={styles.homeContainer}>
-<<<<<<< Updated upstream
-    <ScrollView style={{marginHorizontal:5}}
-    // style={styles.homeContainer}>
-    >
-      <Text 
-      style={styles.instructions}
-      >
-        Home Screen</Text>
-      <Image source={require('./assets/joppe-spaa-TsYzva0e2pQ-unsplash.jpg')}
-      style={styles.image}
-      />
-      <Image source={require('./assets/jannik-skorna-mY2ZHBU6GRk-unsplash.jpg')}
-      style={styles.image}
-      />
-      <Image source={require('./assets/thomas-serer-r-xKieMqL34-unsplash.jpg')}
-      style={styles.image}
-      />
-      {/* <Image source={{uri:'https://unsplash.com/photos/8-s5QuUBtyM',cache: 'only-if-cached' }} style={styles.image} /> */}
-      <Button title="Upload Screen" onPress={() => navigation.navigate("Upload")} />
-      <Button title="The Green Screen" onPress={() => navigation.navigate("GreenScreen", {name:"Blue Screen"})} />
-
-      <Text style={styles.instructions}>Post: {route.params?.post}</Text>
-    </ScrollView>
-=======
       {/* <View style={{ flex: 1 }}> */}
 
       {/* Scrollable container */}
@@ -86,7 +53,6 @@ function HomeScreen({ navigation, route }) {
 
         </ScrollView>
       {/* </View> */}
->>>>>>> Stashed changes
     </SafeAreaView>
   )
 }
@@ -98,17 +64,6 @@ function CreatePostScreen({ navigation, route }) {
     navigation.setOptions({
       headerRight: () => (<Button onPress={() => navigation.navigate("Upload")} title="Upload" color='white' />)
     })
-<<<<<<< Updated upstream
-  })
-  
-  return (
-    <View style={styles.container}>
-      <TextInput placeholder="What's on your mind?" style={styles.post} value={postText} onChangeText={setPostText} />
-      <Button title="Post Text" onPress={() => navigation.navigate({ name: "Home", params: { post: postText }, merge: true, })} />
-      <Button title="Post with Video" onPress={() => navigation.navigate({ name: "Upload", params: { post: postText }, merge: true, })} />
-      <Button title='Titular update' onPress={() => navigation.setOptions({ headerTitle: "New Post" })} />
-    </View>
-=======
   });
 
   useFocusEffect(
@@ -132,7 +87,6 @@ function CreatePostScreen({ navigation, route }) {
     </SafeAreaView>
 
 
->>>>>>> Stashed changes
   );
 
 }
@@ -217,13 +171,6 @@ function LogoTitle() {
 
 const BroadcastStack = createNativeStackNavigator();
 
-<<<<<<< Updated upstream
-function UploadStackScreen(){
-  return(
-    <BroadcastStack.Navigator>
-      <BroadcastStack.Screen name="Create Post" component={CreatePostScreen} />
-      <BroadcastStack.Screen name="Upload" component={BroadcastScreen} />
-=======
 function UploadStackScreen() {
 
   return (
@@ -236,47 +183,10 @@ function UploadStackScreen() {
         }}
 
       />
->>>>>>> Stashed changes
     </BroadcastStack.Navigator>
   )
 }
 
-<<<<<<< Updated upstream
-export default function App(props) {
-
-  return (
-    <NavigationContainer>
-      <Tab.Navigator 
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size}) => {
-          let iconName;
-          if (route.name === 'Home'){
-            iconName = focused ? 'home'
-            : 'home-outline';
-          } else if (route.name === 'Upload') {
-            iconName = 'cloud-upload';
-          } else if (route.name === 'CreatePost'){
-            iconName = "create";
-          } else if (route.name === 'GreenScreen'){
-            iconName = focused ?  "color-palette" : "color-palette-outline";
-          }
-
-          return <Ionicons name={iconName} size={size} color={color}/>;
-        },
-        //tabBarActiveTintColor: 'tomato',
-      })}
-      //mode="modal" initialRouteName='Home' screenOptions={{ headerStyle: { backgroundColor: 'black' }, headerTintColor: 'white', headerTitleStyle: { fontWeight: 'bold' }, }} >
-        >
-        <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false}} />
-        {/* <Tab.Screen name="Upload" component={BroadcastScreen} options={{ headerTitle: (props) => <LogoTitle {...props} /> }} /> */}
-        <Tab.Screen name="GreenScreen" component={GreenScreen} initialParams={{ username: "tammyado" }} options={({ route }) => ({ title: route.params.name, tabBarBadge: 3 }) } />
-        <Tab.Screen name="CreatePost" component={UploadStackScreen} options={{
-          headerShown: false,
-          //headerRight: () => (<Button onPress={() => alert("Upload")} title="Upload" color='white'/>), 
-        }} />
-      </Tab.Navigator>
-    </NavigationContainer>
-=======
 header: ({ navigation, route, options }) => {
   const title = getHeaderTitle(options, route.name);
   if (title === 'Home') {
@@ -358,7 +268,6 @@ export default function App(props) {
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
->>>>>>> Stashed changes
   );
 
 }
@@ -373,13 +282,8 @@ const styles = StyleSheet.create({
     //flex: 1,
     backgroundColor: '#111',
     alignItems: 'center',
-<<<<<<< Updated upstream
-    justifyContent: 'center',
-    
-=======
     //justifyContent: 'center',
     //paddingBottom: 10,
->>>>>>> Stashed changes
   },
   logo: {
     width: 305,
@@ -388,18 +292,11 @@ const styles = StyleSheet.create({
   },
   instructions: {
     color: '#888',
-<<<<<<< Updated upstream
-    fontSize: 18,
-    marginHorizontal: 15,
-    
-    },
-=======
  //   fontSize: 18,
     //marginHorizontal: 15,
 
   },
 
->>>>>>> Stashed changes
   button: {
     backgroundColor: 'blue',
     padding: 20,
@@ -418,18 +315,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     padding: 10,
-<<<<<<< Updated upstream
-    backgroundColor: 'white',
-  },
-  image:{
-    width: 400,
-    height: 250,
-    marginTop: 5,
-    marginBottom: 20,
-    padding: 20,
-    //flexShrink: 1,
-    //flex: 0.5
-=======
     backgroundColor: 'black',
     color: 'white',
     padding: 20,
@@ -445,6 +330,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingBottom: 20,
->>>>>>> Stashed changes
   }
 });
