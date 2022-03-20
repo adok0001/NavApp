@@ -1,10 +1,10 @@
-import 'react-native-gesture-handler';
+//import 'react-native-gesture-handler';
 import React from 'react';
 import { Button, Dimensions, Image, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import * as Sharing from 'expo-sharing';
-import { NavigationContainer, TabActions } from '@react-navigation/native';
+import { NavigationContainer, TabActions, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabBar, createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 //import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -13,8 +13,8 @@ import { BlurView } from 'expo-blur';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { backgroundColor, textDecorationColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import { TouchableWithoutFeedback } from 'react-native-web';
-
 import { data } from './Data';
+import {Video, AVPlaybackStatus} from 'expo-av';
 
 const Tab = createBottomTabNavigator();
 const { width } = Dimensions.get('screen');
@@ -24,6 +24,9 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.9;
 
 function HomeScreen({ navigation, route }) {
   const tabBarheight = useBottomTabBarHeight();
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
+
 
   return (
     <SafeAreaView style={styles.homeContainer}>
@@ -47,6 +50,31 @@ function HomeScreen({ navigation, route }) {
               <Text style={styles.instructions}>Comp: {item.matchType} Time: {item.matchTime}</Text>
             </View>
           ))}
+          <Video source={{uri: "https://wedistill.io/uploads/videos/processed/2/3M2A4273.mp4.mp4"}}
+           ref={video}
+        style={styles.video}
+        useNativeControls
+        />
+          <Video
+        ref={video}
+        style={styles.video}
+        source={{
+          uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+        }}
+        useNativeControls
+        resizeMode="contain"
+        isLooping
+        onPlaybackStatusUpdate={status => setStatus(() => status)}
+      />
+      <View style={styles.buttons}>
+        <Button
+          title={status.isPlaying ? 'Pause' : 'Play'}
+          onPress={() =>
+            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+          }
+        />
+      </View>
+
           <Button title="Upload Screen" onPress={() => navigation.navigate("CreatePost")} />
           <Text style={styles.instructions}>Post: {route.params?.post}</Text>
           <Image source={{ uri: route.params?.media }} style={styles.image} />
@@ -330,5 +358,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingBottom: 20,
+  },
+  video: {
+    alignSelf: 'center',
+    width: 320,
+    height: 200,
   }
 });

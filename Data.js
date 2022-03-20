@@ -24,20 +24,20 @@ export const data = [
     },
     {
         id: '3',
-        homeTeam: "Redeemer's Eagles",
-        awayTeam: 'Bosna',
+        homeTeam: "Super Falcons",
+        awayTeam: 'Bosna FC',
         matchType: 'Vancouver League',
-        matchTime: 'Sept 17th, 6:00pm',
+        matchTime: 'Sept 18th, 5:00pm',
         video_url:
         'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGFtYXRldXIlMjBmb290YmFsbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60',
         userTag: 'ad56gctrasa67',
     },
     {
         id: '4',
-        homeTeam: "Redeemer's Eagles",
-        awayTeam: 'Bosna',
+        homeTeam: "Bayelsa United",
+        awayTeam: 'Dolphins FC',
         matchType: 'Vancouver League',
-        matchTime: 'Sept 17th, 6:00pm',
+        matchTime: 'Sept 22nd, 6:00pm',
         video_url:
             'https://images.unsplash.com/photo-1505748641491-f7ee2fd6fb4d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGNoaWxkcmVuJTIwZm9vdGJhbGx8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60',
             userTag: 'ad56gctrasa67',
