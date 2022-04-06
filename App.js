@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomTabBar, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,22 +10,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStackScreen from "./Screens/Home";
 import UploadStackScreen from "./Screens/BroadcastScreen";
 import MatchDetails from './Screens/MatchDetails';
+import { GreenScreen } from './GreenScreen';
+import SearchScreen from './Screens/SearchScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-function GreenScreen({ route, navigation }) {
-  const { username, playerNo } = route.params;
-  return (
-    <View style={styles.container} >
-      <Text style={styles.instructions}>The Green Screen</Text>
-      <Text style={styles.instructions}>Username: {JSON.stringify(username)} Player Number: {JSON.stringify(playerNo)}</Text>
-      <Button title="Re-Green" onPress={() => navigation.push("GreenScreen", { username: "godtamara", playerNo: Math.floor(Math.random() * 100), })} style={styles.button} />
-      <Button title='Going back' onPress={() => navigation.goBack()} />
-      <Button title="Go back to first screen in Tab" onPress={() => navigation.popToTop()} />
-    </View>
-
-  )
-}
 
 const RootHome = () => {
   return (
@@ -42,6 +31,8 @@ const RootHome = () => {
             iconName = "create";
           } else if (route.name === 'GreenScreen') {
             iconName = focused ? "color-palette" : "color-palette-outline";
+          } else if (route.name === "SearchScreen") {
+            iconName = "search";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -57,7 +48,8 @@ const RootHome = () => {
       })}
     >
       <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{headerShown:false, tabBarLabel:"Home"}} />
-      <Tab.Screen name="GreenScreen" component={GreenScreen} initialParams={{ username: "tammyado" }} options={({ route }) => ({ title: route.params.name, tabBarBadge: 3 })} />
+      <Tab.Screen name="SearchScreen" component={SearchScreen} options={{headerShown:false, tabBarLabel:"Search"}} />
+      {/* <Tab.Screen name="GreenScreen" component={GreenScreen} initialParams={{ username: "tammyado" }} options={({ route }) => ({ title: route.params.name, tabBarBadge: 3 })} /> */}
       <Tab.Screen name="CreatePost" component={UploadStackScreen} options={{
         headerShown: false,
         tabBarLabel: 'Create Post',

@@ -6,8 +6,15 @@ const { width } = Dimensions.get('screen');
 const ITEM_WIDTH = width * 0.9;
 const ITEM_HEIGHT = ITEM_WIDTH * 0.9;
 
+function header(route){
+  const team = route.params.team;
+  return (
+    <Text style={{fontSize:30, color:'black'}}> {team} </Text>
+    )
+}
+
 export default function TeamDetails({navigation, route}) {
-    const team = route.params.team;
+    //const team = route.params.team;
     const video = React.useRef(null);
     const tabBarheight = useBottomTabBarHeight();
 
@@ -17,7 +24,6 @@ export default function TeamDetails({navigation, route}) {
           indicatorStyle="white"
           contentContainerStyle={[{ paddingBottom: tabBarheight, alignItems: 'center' } ]}
         >
-            <Text style={{fontSize:30, color:'white'}}> {team} </Text>
             <Image style={styles.image} source={require('../assets/jannik-skorna-mY2ZHBU6GRk-unsplash.jpg')} />
             <Text style={styles.subheader}>Team Info</Text>
             <Text style={styles.instructions}>This is our team! We are striving harder to be the best, constantly improving body and mind.</Text>
@@ -73,12 +79,13 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     subheader:{
-        fontSize:26,
-        color:'#888'
+        fontSize:22,
+        fontWeight: 'bold',
+        color:'white'
     },
     instructions: {
-      color: '#888',
-      fontSize: 14,
+      color: 'white',
+      fontSize: 15,
       //marginHorizontal: 15,
     }
   });

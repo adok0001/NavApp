@@ -26,13 +26,7 @@ export default function MatchDetails({ navigation, route }) {
 
     return (
         <SafeAreaView style={styles.homeContainer}>
-            <ScrollView
-                indicatorStyle="white"
-                contentContainerStyle={[
-                    { paddingBottom: tabBarheight, alignItems: 'center' },
-                ]}
-            >
-                <View key={item.id} style={{ marginBottom: 14 }}>
+                <View key={item.id} style={{ marginBottom: 14, alignItems:"center" }}>
                     <Video source={{ uri: item.video_url }}
                         ref={video}
                         style={styles.video}
@@ -41,14 +35,16 @@ export default function MatchDetails({ navigation, route }) {
                     />
                     <React.Fragment>
                         <Text style={styles.teamName} onPress={() => navigation.navigate("TeamInfo", { team: item.homeTeam })} >
-                            {item.homeTeam + " vs "} </Text>
-                        <Text style={styles.teamName} onPress={() => navigation.navigate("TeamInfo", { team: item.awayTeam })} >
-                            {item.awayTeam} </Text>
+                            {item.homeTeam} vs
+                            <Text style={styles.teamName} onPress={() => navigation.navigate("TeamInfo", { team: item.awayTeam })} >
+                             {" "+item.awayTeam} 
+                             </Text>
+                             </Text>
                         <Text style={styles.instructions}>Comp: {item.matchType} Time: {item.matchTime}</Text>
                     </React.Fragment>
                 </View>
 
-                <View style={{ flexDirection: "row" }}>
+                <View style={{ flexDirection: "row" , alignItems: "center"}}>
                     <>
                     <FlatList
                         data={[
@@ -68,6 +64,7 @@ export default function MatchDetails({ navigation, route }) {
                     }
                         />
                     </>
+                    
                     <>
                     <FlatList
                         data={[
@@ -88,7 +85,7 @@ export default function MatchDetails({ navigation, route }) {
                     </>
                 </View>
 
-            </ScrollView>
+            
         </SafeAreaView>
     )
 }
@@ -115,17 +112,19 @@ const styles = StyleSheet.create({
         height: 200,
     },
     instructions: {
-        color: '#888',
+        color: 'grey',
         fontSize: 16,
-        //marginHorizontal: 15,
+        marginHorizontal: 15,
 
     },
     teamName: {
         fontSize: 18,
-        color: "#888"
+        color: "white"
     },
     subheader:{
-        fontSize:26,
-        color:'#888'
+        fontSize:20,
+        marginHorizontal: 15,
+        alignItems: "center",
+        color:'white'
     }
 });

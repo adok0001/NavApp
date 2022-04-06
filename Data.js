@@ -6,7 +6,7 @@ export const data = [
         matchType: 'Friendly',
         matchTime: 'Sept 14th, 5:00pm',
         video_url:
-        'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+        '../assets/footieVid4.mp4',
             userTag: 'ad56gctrasa67',
 
     },
@@ -18,7 +18,7 @@ export const data = [
         matchType: 'Vancouver League',
         matchTime: 'Sept 17th, 6:00pm',
         video_url:
-            'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+        '../assets/footieVid6.mp4',
             userTag: 'ad56gctrasa67',
 
     },
@@ -29,7 +29,7 @@ export const data = [
         matchType: 'Vancouver League',
         matchTime: 'Sept 18th, 5:00pm',
         video_url:
-        'https://wedistill.io/uploads/videos/processed/2/3M2A4273.mp4.mp4',
+        '../assets/footieVid1.mp4',
         userTag: 'ad56gctrasa67',
     },
     {
@@ -39,7 +39,7 @@ export const data = [
         matchType: 'Vancouver League',
         matchTime: 'Sept 22nd, 6:00pm',
         video_url:
-            'https://wedistill.io/uploads/videos/processed/2/3M2A4273.mp4.mp4',
+        '../assets/footieVid2.mp4',
             userTag: 'ad56gctrasa67',
         },
 ];

@@ -2,12 +2,12 @@ import React from 'react';
 import { Button, Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { data } from '../Data';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Video, AVPlaybackStatus } from 'expo-av';
+import { data } from '../Data';
 import MatchDetails from './MatchDetails';
 import TeamDetails from "./TeamDetails";
 import PlayerDetails from './PlayerDetails';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const { width } = Dimensions.get('screen');
 
@@ -20,7 +20,6 @@ function Home({ navigation, route }) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
-
   return (
     <SafeAreaView style={styles.homeContainer}>
       <ScrollView
@@ -31,7 +30,11 @@ function Home({ navigation, route }) {
       >
         {data.map((item) => (
           <View key={item.id} style={{ marginBottom: 14 }}>
-            <Video source={{ uri: item.video_url }}
+
+            <Video source={{uri:
+            "https://gdurl.com/1ltI/"
+            , 
+            type:'video/mp4'}}
               ref={video}
               style={styles.video}
               useNativeControls
@@ -41,7 +44,7 @@ function Home({ navigation, route }) {
 
             />
             <Button style={styles.instructions} title={item.homeTeam + " vs " + item.awayTeam}
-              onPress={() => navigation.navigate("MatchInfo",{ id:item.id, match:item})} />
+              onPress={() => navigation.navigate("MatchInfo", { id: item.id, match: item })} />
             <Text style={styles.instructions}>Comp: {item.matchType} Time: {item.matchTime}</Text>
           </View>
         ))}
@@ -63,15 +66,24 @@ function Home({ navigation, route }) {
 
 export default function HomeScreen() {
   return (
-    <HomeStack.Navigator>   
+    <HomeStack.Navigator>
       <HomeStack.Screen name="Home" component={Home} options={{
         headerTitle: "Match Day", headerStyle: {},
         headerTitleStyle: { fontWeight: 'bold', fontSize: 25, },
         //,headerTintColor:"white", headerTransparent:true headerBackground: ()=> <Image style={{width: 500, height: 100,}} source={require('./assets/thomas-serer-r-xKieMqL34-unsplash.jpg')} />,
       }} />
-      <HomeStack.Screen name="MatchInfo" component={MatchDetails} options={{headerShown:false}} />
-      <HomeStack.Screen name="TeamInfo" component={TeamDetails} options={{headerShown:false}} />
-      <HomeStack.Screen name="PlayerInfo" component={PlayerDetails} options={{headerShown:false}} />
+      <HomeStack.Screen name="MatchInfo" component={MatchDetails} options={{ headerShown: false }} />
+      <HomeStack.Screen name="TeamInfo" component={TeamDetails} options={({ route }) => ({
+        title: route.params.team,
+        headerStyle: {
+          backgroundColor: 'black',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      })} />
+      <HomeStack.Screen name="PlayerInfo" component={PlayerDetails} options={{ headerShown: false }} />
     </HomeStack.Navigator>
   )
 }
