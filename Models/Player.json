@@ -1,7 +1,9 @@
 {
+    "id":"",
     "name":"Tagwa Moyo",
-    "team": "",
+    "team": "unset",
     "bio": "",
     "appearances": 300,
-    "goals": 500
+    "goals": 500,
+    "image": "default"
 }

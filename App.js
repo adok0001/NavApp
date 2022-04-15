@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { BottomTabBar, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,59 +12,106 @@ import UploadStackScreen from "./Screens/BroadcastScreen";
 import MatchDetails from './Screens/MatchDetails';
 import { GreenScreen } from './GreenScreen';
 import SearchScreen from './Screens/SearchScreen';
+import Login from './Screens/auth/Login';
+import SignUp from './Screens/auth/SignUp';
+import Settings from './Screens/SettingsScreen';
+import { render } from 'react-dom';
+import { auth } from './Screens/auth/firebase';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const RootHome = () => {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          if (route.name === 'HomeStack') {
-            iconName = focused ? 'home'
-              : 'home-outline';
-          } else if (route.name === 'Upload') {
-            iconName = 'cloud-upload';
-          } else if (route.name === 'CreatePost') {
-            iconName = "create";
-          } else if (route.name === 'GreenScreen') {
-            iconName = focused ? "color-palette" : "color-palette-outline";
-          } else if (route.name === "SearchScreen") {
-            iconName = "search";
-          }
+class RootHome extends Component {
+  constructor(props) {
+    super();
+    this.state =
+      { loaded: false }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarStyle: {
-          position: 'absolute',
-          borderTopColor: 'black',
-          backgroundColor: 'black',
-          elevation: 0,
-        },
-        tabBarBackground: () => (<BlurView tint="dark" intensity={45} style={StyleSheet.absoluteFill} />),
-        tabBarBadgeStyle: { backgroundColor: 'blue' },
-      })}
-    >
-      <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{headerShown:false, tabBarLabel:"Home"}} />
-      <Tab.Screen name="SearchScreen" component={SearchScreen} options={{headerShown:false, tabBarLabel:"Search"}} />
-      {/* <Tab.Screen name="GreenScreen" component={GreenScreen} initialParams={{ username: "tammyado" }} options={({ route }) => ({ title: route.params.name, tabBarBadge: 3 })} /> */}
-      <Tab.Screen name="CreatePost" component={UploadStackScreen} options={{
-        headerShown: false,
-        tabBarLabel: 'Create Post',
-        //headerRight: () => (<Button onPress={() => alert("Upload")} title="Upload" color='white'/>), 
-      }} />
-    </Tab.Navigator>
+  }
 
-  )
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        this.setState({
+          loggedIn: false, loaded: true
+        })
+      } else {
+        console.log("signed uid - "+user.uid)
+        this.setState({ loggedIn: true, loaded: true })
+      }
+
+    });
+  }
+
+  render() {
+    const { loggedIn, loaded } = this.state;
+    if (!loaded) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.instructions}>Loading!</Text>
+        </View>
+      )
+    }
+    if (!loggedIn) {
+      return (
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+        </Stack.Navigator>
+      )
+    } else {
+
+      return (
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              if (route.name === 'HomeStack') {
+                iconName = focused ? 'home'
+                  : 'home-outline';
+              } else if (route.name === 'CreatePost') {
+                iconName = focused ? "create" : "create-outline";
+              } else if (route.name === 'Settings') {
+                iconName = focused ? "settings" : "settings-outline";
+              } else if (route.name === "SearchScreen") {
+                iconName = focused ? "search" : "search-outline";
+              }
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarStyle: {
+              position: 'absolute',
+              borderTopColor: 'black',
+              backgroundColor: 'black',
+              elevation: 0,
+            },
+            tabBarBackground: () => (<BlurView tint="dark" intensity={45} style={StyleSheet.absoluteFill} />),
+            tabBarBadgeStyle: { backgroundColor: 'blue' },
+          })}
+        >
+          <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{ headerShown: false, tabBarLabel: "Home" }} />
+          {/* <Tab.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false, tabBarLabel: "Search" }} /> */}
+          <Tab.Screen name="CreatePost" component={UploadStackScreen} options={{
+            headerShown: false,
+            tabBarLabel: 'Create Post',
+            //headerRight: () => (<Button onPress={() => alert("Upload")} title="Upload" color='white'/>), 
+          }} />
+          <Tab.Screen name="Settings" component={Settings} />
+        </Tab.Navigator>
+
+      )
+    }
+
+  }
+
 }
 
 export function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="rootHome" component={RootHome} options={{ headerShown:false}} />
+
+        <Stack.Screen name="rootHome" component={RootHome} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   )
@@ -74,12 +121,11 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <Navigation/>
+      <Navigation />
     </SafeAreaProvider>
   );
 
 }
-
 
 const styles = StyleSheet.create({
   container: {

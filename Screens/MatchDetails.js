@@ -3,31 +3,15 @@ import { StyleSheet, SafeAreaView, ScrollView, Text, View, FlatList, Button } fr
 import { Video } from "expo-av";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'Tamara Adokeme',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Gina Kari',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Alex Solo',
-    },
-];
-
 export default function MatchDetails({ navigation, route }) {
     const item = route.params.match;
     const video = React.useRef(null);
     const tabBarheight = useBottomTabBarHeight();
 
-
     return (
         <SafeAreaView style={styles.homeContainer}>
                 <View key={item.id} style={{ marginBottom: 14, alignItems:"center" }}>
-                    <Video source={{ uri: item.video_url }}
+                    <Video source={{ uri: item.link }}
                         ref={video}
                         style={styles.video}
                         useNativeControls

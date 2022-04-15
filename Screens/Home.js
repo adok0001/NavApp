@@ -17,9 +17,10 @@ const HomeStack = createNativeStackNavigator();
 
 function Home({ navigation, route }) {
   const tabBarheight = useBottomTabBarHeight();
+  const match = route.params?.matchObject;
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
-
+  var vidPath = React.useState("");
   return (
     <SafeAreaView style={styles.homeContainer}>
       <ScrollView
@@ -30,11 +31,8 @@ function Home({ navigation, route }) {
       >
         {data.map((item) => (
           <View key={item.id} style={{ marginBottom: 14 }}>
+            <Video source={{uri: item.link}}
 
-            <Video source={{uri:
-            "https://gdurl.com/1ltI/"
-            , 
-            type:'video/mp4'}}
               ref={video}
               style={styles.video}
               useNativeControls
@@ -43,22 +41,29 @@ function Home({ navigation, route }) {
               onPlaybackStatusUpdate={status => setStatus(() => status)}
 
             />
-            <Button style={styles.instructions} title={item.homeTeam + " vs " + item.awayTeam}
+            <Button title={item.homeTeam + " vs " + item.awayTeam}
               onPress={() => navigation.navigate("MatchInfo", { id: item.id, match: item })} />
             <Text style={styles.instructions}>Comp: {item.matchType} Time: {item.matchTime}</Text>
           </View>
         ))}
-
-
-        <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
-          onPress={() => status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()}
-        />
-
-        <Button title="Upload Screen" onPress={() => navigation.navigate("CreatePost")} />
-        <Text style={styles.instructions}>Post: {route.params?.post}</Text>
-        <Image source={{ uri: route.params?.media }} style={styles.image} />
-
+        {match && (
+          <View style={{marginBottom: 14}}>
+          <Video source={{ uri: match.link}}
+                        ref={video}
+                        style={styles.video}
+                        useNativeControls
+                        resizeMode="contain"
+                        isLooping
+                        onPlaybackStatusUpdate={status => setStatus(() => status)}
+          />
+          <Button title={match.homeTeam + " vs " + match.awayTeam}
+              onPress={() => navigation.navigate("MatchInfo", {match: match })} />
+            <Text style={styles.instructions}>Comp: {match.matchType} Time: {match.matchTime}</Text>
+          
+          </View>
+        )}
+        
+        
       </ScrollView>
     </SafeAreaView>
   );
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     backgroundColor: '#111',
     alignItems: 'center',
-    //justifyContent: 'center',
+    justifyContent: 'center',
     //paddingBottom: 10,
   },
   logo: {
@@ -108,6 +113,7 @@ const styles = StyleSheet.create({
   },
   instructions: {
     color: '#888',
+    alignSelf: "center",
     //   fontSize: 18,
     //marginHorizontal: 15,
 
@@ -153,4 +159,3 @@ const styles = StyleSheet.create({
     height: 200,
   }
 });
-

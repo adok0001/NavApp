@@ -1,7 +1,9 @@
 {
+    "code":"",
     "homeTeam":"",
     "awayTeam":"",
     "matchType":"",
     "matchTime": "",
-    "url":""
+    "link":"",
+    "userId":""
 }

@@ -18,15 +18,15 @@ export default function PlayerDetails() {
         ]}
       >
         <Image source={require("../assets/jeffrey-f-lin-eO2l1doO9H8-unsplash.jpg")} style={styles.playerPic} />
-        <View style={{ flex:3, paddingLeft: 15, justifyContent: "space-around", paddingRight: 20 }}>
+        <View style={styles.contentContainer}>
 
           <View syle={{ flex: 1, flexDirection: "row" }}>
             <>
             <Text style={styles.instructions}>Player Name</Text>
-            <Text style={styles.playerName}>Tagwa Moyo</Text>
+            <Text style={styles.playerName}>Tagwa Moyo (Sunset Beach FC)</Text>
             </><>
             <Text style={styles.instructions}>Position</Text>
-            <Text style={styles.playerName}>TS</Text>
+            <Text style={styles.playerName}>ST</Text>
             </>
           </View>
 
@@ -38,9 +38,9 @@ export default function PlayerDetails() {
           </View>
           <View syle={{ flexDirection: "column" }}>
             <Text style={styles.instructions}>Games Played</Text>
-            <Text style={styles.detailsText}>300</Text>
+            <Text style={styles.detailsText}>3000</Text>
             <Text style={styles.instructions}>Goals Scored</Text>
-            <Text style={styles.detailsText}>821</Text>
+            <Text style={styles.detailsText}>82100</Text>
           </View>
         </View>
         {/* </View> */}
@@ -60,10 +60,12 @@ const styles = StyleSheet.create({
     //paddingBottom: 10,
   },
   contentContainer: {
-    marginTop: 50,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 20,
+    flex:2,
+    alignContent:"center"
+    //marginTop: 50,
+    //alignItems: 'center',
+    //paddingHorizontal: 20,
+    //paddingBottom: 20,
   },
   image: {
     borderRadius: 14,
@@ -90,11 +92,11 @@ const styles = StyleSheet.create({
     flex: 2
   },
   playerName: {
-    color: "blue",
+    color: "white",
     fontSize: 25
   },
   detailsText: {
-    color: "blue",
+    color: "white",
     fontSize: 18
   }
 });
