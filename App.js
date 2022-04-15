@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React from 'react';
 import { Button, Image, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
@@ -7,16 +8,38 @@ import { NavigationContainer, TabActions, useFocusEffect } from '@react-navigati
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 //import {createDrawerNavigator} from '@react-navigation/drawer';
+=======
+import React, { Component } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { BottomTabBar, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+>>>>>>> Stashed changes
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {BlurView} from 'expo-blur';
 import { getHeaderTitle } from '@react-navigation/elements';
+<<<<<<< Updated upstream
 import { backgroundColor, textDecorationColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import { TouchableWithoutFeedback } from 'react-native-web';
 
+=======
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeStackScreen from "./Screens/Home";
+import UploadStackScreen from "./Screens/BroadcastScreen";
+import MatchDetails from './Screens/MatchDetails';
+import { GreenScreen } from './GreenScreen';
+import SearchScreen from './Screens/SearchScreen';
+import Login from './Screens/auth/Login';
+import SignUp from './Screens/auth/SignUp';
+import Settings from './Screens/Settings';
+import { render } from 'react-dom';
+import { auth, userId } from './Screens/auth/firebase';
+>>>>>>> Stashed changes
 
 const Tab = createBottomTabNavigator();
 Keyboard.dismiss();
 
+<<<<<<< Updated upstream
 function HomeScreen({ navigation, route }) {
   React.useEffect(() => {
     if (route.params?.post) {
@@ -48,6 +71,91 @@ function HomeScreen({ navigation, route }) {
     </ScrollView>
     </SafeAreaView>
   )
+=======
+class RootHome extends Component {
+  constructor(props) {
+    super();
+    this.state =
+      { loaded: false }
+
+  }
+
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        this.setState({
+          loggedIn: false, loaded: true
+        })
+      } else {
+        console.log("signed uid - "+userId)
+        this.setState({ loggedIn: true, loaded: true })
+      }
+
+    });
+  }
+
+  render() {
+    const { loggedIn, loaded } = this.state;
+    if (!loaded) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.instructions}>Loading!</Text>
+        </View>
+      )
+    }
+    if (!loggedIn) {
+      return (
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+        </Stack.Navigator>
+      )
+    } else {
+
+      return (
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              if (route.name === 'HomeStack') {
+                iconName = focused ? 'home'
+                  : 'home-outline';
+              } else if (route.name === 'CreatePost') {
+                iconName = focused ? "create" : "create-outline";
+              } else if (route.name === 'Settings') {
+                iconName = focused ? "settings" : "settings-outline";
+              } else if (route.name === "SearchScreen") {
+                iconName = focused ? "search" : "search-outline";
+              }
+
+              return <Ionicons name={iconName} size={size} color={color} />;
+            },
+            tabBarStyle: {
+              position: 'absolute',
+              borderTopColor: 'black',
+              backgroundColor: 'black',
+              elevation: 0,
+            },
+            tabBarBackground: () => (<BlurView tint="dark" intensity={45} style={StyleSheet.absoluteFill} />),
+            tabBarBadgeStyle: { backgroundColor: 'blue' },
+          })}
+        >
+          <Tab.Screen name="HomeStack" component={HomeStackScreen} options={{ headerShown: false, tabBarLabel: "Home" }} />
+          {/* <Tab.Screen name="SearchScreen" component={SearchScreen} options={{ headerShown: false, tabBarLabel: "Search" }} /> */}
+          <Tab.Screen name="CreatePost" component={UploadStackScreen} options={{
+            headerShown: false,
+            tabBarLabel: 'Create Post',
+            //headerRight: () => (<Button onPress={() => alert("Upload")} title="Upload" color='white'/>), 
+          }} />
+          <Tab.Screen name="Settings" component={Settings} />
+        </Tab.Navigator>
+
+      )
+    }
+
+  }
+
+>>>>>>> Stashed changes
 }
 
 function CreatePostScreen({ navigation, route }) {
@@ -124,6 +232,7 @@ function BroadcastScreen({ navigation }) {
   }
 
   return (
+<<<<<<< Updated upstream
     <View style={styles.container}>
       <Image source={{ uri: 'https://i.imgur.com/TkIrScD.png' }} style={styles.logo} />
       <Text style={styles.instructions}>
@@ -176,6 +285,14 @@ function UploadStackScreen(){
         
       />
     </BroadcastStack.Navigator>
+=======
+    <NavigationContainer>
+      <Stack.Navigator>
+
+        <Stack.Screen name="rootHome" component={RootHome} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+>>>>>>> Stashed changes
   )
 }
 
@@ -191,6 +308,7 @@ export default function App(props) {
 
   return (
     <SafeAreaProvider>
+<<<<<<< Updated upstream
     <NavigationContainer>
       <Tab.Navigator 
       screenOptions={({ route }) => ({
@@ -235,6 +353,9 @@ export default function App(props) {
         }} />
       </Tab.Navigator>
     </NavigationContainer>
+=======
+      <Navigation />
+>>>>>>> Stashed changes
     </SafeAreaProvider>
   );
 
