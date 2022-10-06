@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
     textInput: {
         marginBottom: 10,
         borderColor: 'gray',
-        backgroundColor: 'whitesmoke',
+        backgroundColor: 'black',
         padding: 10,
         borderWidth: 1,
-        borderRadius: 8
+        borderRadius: 8,
     },
     button: {
         backgroundColor: 'blue',

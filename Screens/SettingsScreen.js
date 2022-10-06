@@ -17,6 +17,11 @@ export default function Settings({navigation, route}) {
 
     return (
         <View style={styles.container}>
+          <TextInput placeholder='email' />
+          <TextInput placeholder='email' />
+          <TextInput placeholder='email' />
+
+
           {user && (
             <Text style={styles.buttonText}>
               {user.email} signed in
